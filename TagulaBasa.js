@@ -126,9 +126,8 @@ TagulaBasa.prototype.uppest = function() {
  *
  */ 
 
-TagulaBasa.prototype.add = function(tagName='div', txt=null) {
+TagulaBasa.prototype.add = function(tagName='div') {
   var ele = document.createElement(tagName)
-  if(txt) ele.textContent = txt
   this.ele.appendChild(ele)
   return ele
 }
@@ -169,11 +168,14 @@ TagulaBasa.prototype.txt = function(txt=null) {
  */ 
 
 TagulaBasa.prototype.eve = function(eveName, funcName) {
+  // Bind execution of a function to an event.
   this.ele.addEventListener(eveName, funcName, false)
 }
 TagulaBasa.prototype.click = function(funcName) {
+  // Short for: `tag.eve('click', funcName)`.
   this.eve('click', funcName)
 }
 TagulaBasa.prototype.loaded = function(funcName) {
+  // Short for: `tag.eve('DOMContentLoaded', funcName)`.
   this.eve('DOMContentLoaded', funcName)
 }
