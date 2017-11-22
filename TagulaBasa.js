@@ -147,9 +147,10 @@ TagulaBasa.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
   this.up() // switch context back to parent
   return ele
 }
+
 /*
  *
- *  Fill
+ *  Text
  *
  */ 
 
@@ -167,15 +168,12 @@ TagulaBasa.prototype.txt = function(txt=null) {
  *
  */ 
 
-TagulaBasa.prototype.eve = function(eveName, funcName) {
-  // Bind execution of a function to an event.
+TagulaBasa.prototype.eve = function(eventName, functionName) {
+  // Bind execution of a function to an event:
+  // `tag.eve(eventName, functionName)`
   this.ele.addEventListener(eveName, funcName, false)
 }
-TagulaBasa.prototype.click = function(funcName) {
-  // Short for: `tag.eve('click', funcName)`.
-  this.eve('click', funcName)
-}
-TagulaBasa.prototype.loaded = function(funcName) {
-  // Short for: `tag.eve('DOMContentLoaded', funcName)`.
-  this.eve('DOMContentLoaded', funcName)
+TagulaBasa.prototype.click = function(functionName) {
+  // Short for: `tag.eve('click', functionName)`.
+  this.eve('click', functionName)
 }
