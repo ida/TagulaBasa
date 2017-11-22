@@ -99,7 +99,7 @@ function TagulaBasa(ele=document.body) {
  *
  */
  
-Tag.prototype.down = function(pos=0) {
+TagulaBasa.prototype.down = function(pos=0) {
   // Switch context to child at position.
   // Defauts to first child. If you want
   // to grab the last child, pass `-1`
@@ -110,12 +110,12 @@ Tag.prototype.down = function(pos=0) {
   this.ele = this.ele.children[pos]
 }
 
-Tag.prototype.up = function() {
+TagulaBasa.prototype.up = function() {
   // Switch context to parent-ele.
   this.ele = this.ele.parentNode
 }
 
-Tag.prototype.uppest = function() {
+TagulaBasa.prototype.uppest = function() {
   // Switch context to root-ele.
   while(this.ele != this.root) this.up()
 }
@@ -126,14 +126,14 @@ Tag.prototype.uppest = function() {
  *
  */ 
 
-Tag.prototype.add = function(tagName='div', txt=null) {
+TagulaBasa.prototype.add = function(tagName='div', txt=null) {
   var ele = document.createElement(tagName)
   if(txt) ele.textContent = txt
   this.ele.appendChild(ele)
   return ele
 }
 
-Tag.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
+TagulaBasa.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
   // Create list-element, fill it with passed items and return list-element.
   // Passed items can be an array or a function which returns an array.
   var items = returnItemsFuncNameOrItemsArray
@@ -154,7 +154,7 @@ Tag.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
  *
  */ 
 
-Tag.prototype.txt = function(txt=null) {
+TagulaBasa.prototype.txt = function(txt=null) {
   // Get text of ele: `var text = tag.txt()`
   // Set text of ele: `tag.txt('Some text')`
   // TODO: Regard input-values and no-text.
@@ -168,12 +168,12 @@ Tag.prototype.txt = function(txt=null) {
  *
  */ 
 
-Tag.prototype.eve = function(eveName, funcName) {
+TagulaBasa.prototype.eve = function(eveName, funcName) {
   this.ele.addEventListener(eveName, funcName, false)
 }
-Tag.prototype.click = function(funcName) {
+TagulaBasa.prototype.click = function(funcName) {
   this.eve('click', funcName)
 }
-Tag.prototype.loaded = function(funcName) {
+TagulaBasa.prototype.loaded = function(funcName) {
   this.eve('DOMContentLoaded', funcName)
 }
