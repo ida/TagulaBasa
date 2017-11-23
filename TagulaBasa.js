@@ -117,7 +117,7 @@ TagulaBasa.prototype.up = function() {
 
 TagulaBasa.prototype.uppest = function() {
   // Switch context to root-ele.
-  while(this.ele != this.root) this.up()
+  this.ele = this.root
 }
 
 /*

@@ -9,12 +9,21 @@
   <script type="text/javascript">
     document.addEventListener("DOMContentLoaded", function(event) {
       var tag = new TagulaBasa()
-      console.log(tag.ele)
+      tag.add('h1')
+      tag.down(-1)
+        tag.txt('Hello')
+      tag.up('h1')
       tag.add()
-      tag.txt('halloele')
+      tag.down(-1)
+        tag.add('span')
+        tag.down(-1)
+          tag.add('p')
+          tag.down(-1)
+        tag.txt('Goodbye')
+console.log(tag.ele)
+      tag.uppest()
+console.log(tag.ele)
     });
   </script>
-<!--
--->
 </body>
 </html>
