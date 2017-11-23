@@ -22,14 +22,27 @@ tag.down(-1)
       tag.txt('Grand child')
     tag.up()
   tag.up()
+
   tag.add()
   tag.down(-1)
-    tag.txt('Second child')
+    tag.txt('A child')
   tag.up()
+
+  tag.add()
+  tag.down(-1)
+    tag.txt('Last child')
+  tag.up()
+
+  var pos = -
+7
+  tag.add('span', pos)
+//  tag.down(pos)
+//  tag.txt('Inserted child')
+
 tag.up()
 
-console.log(tag.ele)
-console.log(tag.txt())
+//console.log(tag.ele)
+//console.log(tag.txt())
 
 
   }); // DOM loaded

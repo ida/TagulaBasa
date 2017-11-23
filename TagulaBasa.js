@@ -135,9 +135,19 @@ TagulaBasa.prototype.uppest = function() {
  *
  */ 
 
-TagulaBasa.prototype.add = function(tagName='div') {
+TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
+  // Add ele in current ele at position.
   var ele = document.createElement(tagName)
-  this.ele.appendChild(ele)
+  var nextSibling = null // if null, ele will be inserted as last child
+  var childrenAmount = this.ele.children.length
+
+  if(pos < -1 && childrenAmount > 0) {
+    pos = childrenAmount + 1 + pos
+    if(pos < 0) pos = 0
+    nextSibling = this.ele.children[pos]
+  }
+
+  this.ele.insertBefore(ele, nextSibling)
   return ele
 }
 
