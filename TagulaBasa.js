@@ -110,6 +110,15 @@ TagulaBasa.prototype.down = function(pos=0) {
   this.ele = this.ele.children[pos]
 }
 
+TagulaBasa.prototype.nxt = function() {
+  // Get next sibling-ele, if there is none, return null.
+  this.ele = this.ele.nextElementSibling
+}
+TagulaBasa.prototype.prv = function() {
+  // Get previous sibling-ele, if there is none, return null.
+  this.ele = this.ele.nextElementSibling
+}
+
 TagulaBasa.prototype.up = function() {
   // Switch context to parent-ele.
   this.ele = this.ele.parentNode
@@ -144,7 +153,7 @@ TagulaBasa.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
   for(var i in items) {
     this.add('li', items[i])
   }
-  this.up() // switch context back to parent
+  this.up() // return to old context, the list-parent
   return ele
 }
 
