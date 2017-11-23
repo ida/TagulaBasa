@@ -3,43 +3,38 @@
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>Tagula basa</title>
+<style>
+  * { margin-left: 1em }
+</style>
 <script type="text/javascript" src="TagulaBasa.js"></script>
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var tag = new TagulaBasa()
+
+tag.add()
+tag.down(-1)
+  tag.txt('Container')
+  tag.add()
+  tag.down(-1)
+    tag.txt('First child')
+    tag.add()
+    tag.down(-1)
+      tag.txt('Grand child')
+    tag.up()
+  tag.up()
+  tag.add()
+  tag.down(-1)
+    tag.txt('Second child')
+  tag.up()
+tag.up()
+
+console.log(tag.ele)
+console.log(tag.txt())
+
+
+  }); // DOM loaded
+</script>
 </head>
 <body lang="en" dir="ltr">
-  <script type="text/javascript">
-    document.addEventListener("DOMContentLoaded", function(event) {
-      var tag = new TagulaBasa()
-      tag.add('style')
-        tag.down(-1)
-        tag.txt('* { margin-left: 1em }')
-      tag.up()
-      tag.add()
-        tag.down(-1)
-        tag.txt('Container')
-        tag.add()
-          tag.down(-1)
-          tag.txt('First child')
-          tag.add()
-            tag.down(-1)
-            tag.txt('Grand child')
-          tag.up()
-        tag.up()
-        tag.add()
-          tag.down(-1)
-          tag.txt('Second child')
-
-      tag.uppest()
-      tag.down()
-      tag.nxt()
-      console.log(tag.ele)
-      console.log(tag.txt())
-      tag.prv()
-      console.log(tag.ele)
-      console.log(tag.txt())
-      //tag.prv()
-      console.log(tag.ele)
-      console.log(tag.txt())
-    });
-  </script>
 </body>
 </html>
