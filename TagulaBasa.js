@@ -83,10 +83,10 @@ MIT, a copy is attached in this folder.
 */
 
 
-function TagulaBasa(ele=document.body) {
-
-  this.ele  = ele // context-ele, switches when walking the tree
-  this.root = ele // reference to uppest ele 
+function TagulaBasa(ele=null) {
+  if(ele===null) ele = document.body // no ele passed, default to body
+  this.ele  = ele   // context-ele, switches when walking the tree
+  this.root = ele  // reference to uppest ele
 
   // Example for adding a prop of an external script:
   // this.style = styleToSheet // expects glob-var 'styleToSheet'
