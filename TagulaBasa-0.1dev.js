@@ -144,9 +144,6 @@ TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
   if(this.ele.children !== undefined) { // otherwise count children
     childrenAmount = this.ele.children.length
   }
-  else {
-console.log('no children')
-  }
   if(pos < -1 && childrenAmount > 0) { // negative position was passed
     pos = childrenAmount + 1 + pos // get positive equivalent
     if(pos < 0) pos = 0 // pos exceeds childrenAmount, default to first child
@@ -199,7 +196,7 @@ TagulaBasa.prototype.txt = function(txt=null) {
 TagulaBasa.prototype.eve = function(eventName, functionName) {
   // Bind execution of a function to an event:
   // `tag.eve(eventName, functionName)`
-  this.ele.addEventListener(eveName, funcName, false)
+  this.ele.addEventListener(eventName, functionName, false)
 }
 TagulaBasa.prototype.click = function(functionName) {
   // Short for: `tag.eve('click', functionName)`.
