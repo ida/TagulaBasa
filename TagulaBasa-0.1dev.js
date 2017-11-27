@@ -202,3 +202,24 @@ TagulaBasa.prototype.click = function(functionName) {
   // Short for: `tag.eve('click', functionName)`.
   this.eve('click', functionName)
 }
+
+/*
+ *
+ *  Script
+ *
+ */
+
+TagulaBasa.prototype.addScriptEle = function() {
+  var context = this.ele
+  while(this.ele.tagName.toLowerCase() !== 'html') {
+    this.up()
+  }
+  this.down()
+  this.scriptEle = this.add('script')
+  this.ele = context
+}
+TagulaBasa.prototype.script = function(script) {
+  if(this.scriptEle === undefined) this.addScriptEle()
+  this.scriptEle.innerHTML += script
+}
+
