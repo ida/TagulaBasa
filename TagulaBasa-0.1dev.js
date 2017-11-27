@@ -1,7 +1,7 @@
 /*
 
-TagulaBasa
-==========
+TagulaBasa-0.1dev
+=================
 
 
 What
@@ -28,7 +28,7 @@ regarded as the root-element of your app:
 
 ```javascript
     var tag = document.body
-    TagulaBasa(tag)
+    tag = new TagulaBasa(tag)
 ```
 
 Or, don't pass an element, then the body-element is the chosen one.
@@ -99,11 +99,12 @@ function TagulaBasa(ele=null) {
  *
  */
  
-TagulaBasa.prototype.down = function(pos=0) {
+TagulaBasa.prototype.down = function(pos=-1) {
   // Switch context to child at position.
-  // Defauts to first child. If you want
-  // to grab the last child, pass `-1`
-  // as pos-value.
+  // Defauts to last child, assuming most common case
+  // is to walk down after appending an ele.
+  // If you want to grab the first child,
+  // pass zero or 'first' as pos.
   if( String(pos).startsWith('-') ) {
     pos = this.ele.children.length + pos
   }
@@ -138,12 +139,17 @@ TagulaBasa.prototype.uppest = function() {
 TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
   // Add ele in current ele at position.
   var ele = document.createElement(tagName)
-  var nextSibling = null // if null, ele will be inserted as last child
-  var childrenAmount = this.ele.children.length
-
-  if(pos < -1 && childrenAmount > 0) {
-    pos = childrenAmount + 1 + pos
-    if(pos < 0) pos = 0
+  var nextSibling = null // if no sibling found, insert ele as last child
+  var childrenAmount = 0 // default to 0, if children are undefined
+  if(this.ele.children !== undefined) { // otherwise count children
+    childrenAmount = this.ele.children.length
+  }
+  else {
+console.log('no children')
+  }
+  if(pos < -1 && childrenAmount > 0) { // negative position was passed
+    pos = childrenAmount + 1 + pos // get positive equivalent
+    if(pos < 0) pos = 0 // pos exceeds childrenAmount, default to first child
     nextSibling = this.ele.children[pos]
   }
 
@@ -159,9 +165,12 @@ TagulaBasa.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
     items = items()
   }
   var ele = this.add('ul')
-  this.down(-1) // switch context to list
+  this.down() // switch context to list
   for(var i in items) {
-    this.add('li', items[i])
+    this.add('li')
+      this.down()
+      this.txt(items[i])
+    this.up()
   }
   this.up() // return to old context, the list-parent
   return ele
