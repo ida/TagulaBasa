@@ -31,7 +31,7 @@ TagulaBasa(tag)
 
 Or, don't pass an element, then the body-element is the chosen one.
 
-Furtheron the new peoperties can be used of that element:
+Furtheron the new properties can be used of that element:
 
 ```javascript
 tag.add()       // Append a child-element with tag-name 'div'.
