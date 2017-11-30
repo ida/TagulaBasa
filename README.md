@@ -69,7 +69,7 @@ Look into this script, to see all available functions.
 Authors
 -------
 
-Ida Ebkes <contact@ida-ebkes.eu> 2017
+Ida Ebkes <contact@ida-ebkes.eu>, 2017
 
 
 License
