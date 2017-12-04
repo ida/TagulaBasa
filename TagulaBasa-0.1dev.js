@@ -179,12 +179,31 @@ TagulaBasa.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
  *
  */ 
 
-TagulaBasa.prototype.txt = function(txt=null) {
+TagulaBasa.prototype.txt = function(text=null) {
   // Get text of ele: `var text = tag.txt()`
   // Set text of ele: `tag.txt('Some text')`
-  // TODO: Regard input-values and no-text.
-  if(txt === null) return this.ele.textContent
-  else this.ele.textContent = txt
+  // Works for eles of type input as well as for ordinary eles.
+
+  // No text was passed, return current text:
+  if(text === null) {
+    // If the ele has value-property it is of type input:
+    if(this.ele.value !==  undefined) {
+      return this.ele.value
+    }
+    // Otherwise it's an ordinary element, get its text:
+    return this.ele.innerHTML    
+    //  (We use innerHTML because it's cross-browser-compatible and
+    //  allthough the text shouldn't contain html, it could anyways,
+    //  but then we wanted to know about it, too.)
+  }
+  // Text was passed, insert it:
+  else {
+    // For input-eles:
+    if(this.ele.value !==  undefined) {
+      this.ele.value = text
+    } // Everyone else:
+    else this.ele.innerHTML = text
+  }
 }
 
 /*
