@@ -137,7 +137,8 @@ TagulaBasa.prototype.uppest = function() {
  */ 
 
 TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
-  // Add ele in current ele at position.
+  // Add ele in current ele at position and return ele-tag-obj.
+  var tag = this
   var ele = document.createElement(tagName)
   var nextSibling = null // if no sibling found, insert ele as last child
   var childrenAmount = 0 // default to 0, if children are undefined
@@ -151,7 +152,9 @@ TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
   }
 
   this.ele.insertBefore(ele, nextSibling)
-  return ele
+
+  tag.down(pos)
+  return tag
 }
 
 TagulaBasa.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
