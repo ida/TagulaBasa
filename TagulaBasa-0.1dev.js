@@ -111,13 +111,50 @@ TagulaBasa.prototype.down = function(pos=-1) {
   this.ele = this.ele.children[pos]
 }
 
+
+
+TagulaBasa.prototype.download = function(ele=null) {
+
+  // Download content of current tag as a file
+  // named after the ele's first found className,
+  // or its tagName.
+
+
+  if(ele === null) ele = this.ele
+
+
+  var a = document.createElement('a')
+  var fileContent = ele.outerHTML
+  var fileExtension = 'html'
+  var fileName = ele.className.split(' ')[0]
+
+
+  if(fileName == '') fileName = ele.tagName.toLowerCase()
+  if(ele.tagName.toLowerCase() == 'style') fileExtension = 'css'
+  else if(ele.tagName.toLowerCase() == 'script') fileExtension = 'js'
+
+
+  fileName += '.' + fileExtension
+  a.setAttribute('download', fileName)
+  a.textContent = 'Download'
+  a.href = 'data: application/text; charset=utf-8,'
+         + encodeURIComponent(fileContent)
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+
+
+}
+
+
+
 TagulaBasa.prototype.nxt = function() {
   // Get next sibling-ele, if there is none, return null.
   this.ele = this.ele.nextElementSibling
 }
 TagulaBasa.prototype.prv = function() {
   // Get previous sibling-ele, if there is none, return null.
-  this.ele = this.ele.nextElementSibling
+  this.ele = this.ele.previousElementSibling
 }
 
 TagulaBasa.prototype.up = function() {
@@ -157,10 +194,10 @@ TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
   return tag
 }
 
-TagulaBasa.prototype.adds = function(returnItemsFuncNameOrItemsArray) {
-  // Create list-element, fill it with passed items and return list-element.
+TagulaBasa.prototype.adds = function(funcOrArrayName) {
+  // Create list-element, fill it with passed items, return list-element.
   // Passed items can be an array or a function which returns an array.
-  var items = returnItemsFuncNameOrItemsArray
+  var items = funcOrArrayName
   if(typeof(items) == 'function') {
     items = items()
   }
