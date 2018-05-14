@@ -268,17 +268,15 @@ TagulaBasa.prototype.click = function(functionName) {
  *
  */
 
-TagulaBasa.prototype.addScriptEle = function() {
-  var context = this.ele
-  while(this.ele.tagName.toLowerCase() !== 'html') {
-    this.up()
-  }
-  this.down()
-  this.scriptEle = this.add('script')
-  this.ele = context
-}
 TagulaBasa.prototype.script = function(script) {
-  if(this.scriptEle === undefined) this.addScriptEle()
-  this.scriptEle.innerHTML += script
+  var space = ''
+  if(this.scriptEle === undefined) {
+    var context = this.ele
+    this.ele = document.head
+    this.add('script')
+    this.scriptEle = this.ele
+    this.ele = context
+  } else space = '\n'
+  this.scriptEle.innerHTML += space + script
 }
 
