@@ -105,6 +105,8 @@ TagulaBasa.prototype.down = function(pos=-1) {
   // is to walk down after appending an ele.
   // If you want to grab the first child,
   // pass zero or 'first' as pos.
+  if(pos == 'first') pos = 0
+  if(pos == 'last') pos = -1
   if( String(pos).startsWith('-') ) {
     pos = this.ele.children.length + pos
   }
