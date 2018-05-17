@@ -93,6 +93,12 @@ upon the element, when executed as shown below.
     tag.ele = tag.root
 
 
+All of these functions are chainable, meaning you can make your code
+less readable, as it already is:
+
+    tag.add().txt('1st').up().add().txt('2nd').add().txt('Child of 2nd')
+
+
 Authors
 -------
 
@@ -141,29 +147,34 @@ TagulaBasa.prototype.down = function(pos=-1) {
     pos = this.ele.children.length + pos
   }
   this.ele = this.ele.children[pos]
+  return this
 }
 
 
 TagulaBasa.prototype.nxt = function() {
   // Get next sibling-ele. If there is none, return null.
   this.ele = this.ele.nextElementSibling
+  return this
 }
 
 
 TagulaBasa.prototype.prv = function() {
   // Get previous sibling-ele. If there is none, return null.
   this.ele = this.ele.previousElementSibling
+  return this
 }
 
 
 TagulaBasa.prototype.up = function() {
   // Switch context to parent-ele.
   this.ele = this.ele.parentNode
+  return this
 }
 
 TagulaBasa.prototype.uppest = function() {
   // Switch context to root-ele.
   this.ele = this.root
+  return this
 }
 
 /*
@@ -175,7 +186,6 @@ TagulaBasa.prototype.uppest = function() {
 TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
   // Add ele in current ele at position, switch tag-context
   // to it, and return tag-object.
-  var tag = this
   var ele = document.createElement(tagName)
   var nextSibling = null // if no sibling found, insert ele as last child
   var childrenAmount = 0 // default to 0, if children are undefined
@@ -190,8 +200,8 @@ TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
 
   this.ele.insertBefore(ele, nextSibling)
 
-  tag.down(pos)
-  return tag
+  this.down(pos)
+  return this
 }
 
 TagulaBasa.prototype.adds = function(funcOrArrayName) {
@@ -209,8 +219,8 @@ TagulaBasa.prototype.adds = function(funcOrArrayName) {
       this.txt(items[i])
     this.up()
   }
-  this.up() // return to old context, the list-parent
-  return ele
+  this.up() // switch context to list-parent
+  return this
 }
 
 /*
@@ -244,6 +254,7 @@ TagulaBasa.prototype.txt = function(text=null) {
     } // Everyone else:
     else this.ele.innerHTML = text
   }
+  return this
 }
 
 /*
@@ -256,10 +267,11 @@ TagulaBasa.prototype.eve = function(eventName, functionName) {
   // Bind execution of a function to an event:
   // `tag.eve(eventName, functionName)`
   this.ele.addEventListener(eventName, functionName, false)
+  return this
 }
 TagulaBasa.prototype.click = function(functionName) {
   // Short for: `tag.eve('click', functionName)`.
-  this.eve('click', functionName)
+  return this.eve('click', functionName)
 }
 
 /*
@@ -315,9 +327,5 @@ TagulaBasa.prototype.download = function(ele=null) {
   document.body.appendChild(a)
   a.click()
   a.remove()
-
-
 }
-
-
 
