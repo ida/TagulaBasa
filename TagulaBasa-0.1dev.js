@@ -7,16 +7,20 @@ TagulaBasa-0.1dev
 What
 ----
 
-Add properties to an element for ease of writing Javascript
-and a clear separation of concerns (HTML, CSS, JS).
+Wrap an element into a TagualaBasa-object, which provides properties for most important Javascript-tasks, and switch context to another element, as wished.
 
 
 Why
 ---
 
-Have common tasks available as property-functions, where one
-can use the neat dot-notation. Enforce good-practice through
-programmatical way of adding content, style and event-listerners.
+- Quick prototyping
+
+Not yet realized, but in the backyard:
+
+- Enforce good practice, e.g.: "ele-content must be either text or eles".
+
+- Separation of concerns: After prototyping generate and export an HTML-,
+  a CSS- and a JS-file.
 
 
 How
@@ -26,46 +30,67 @@ After adding this script to the head-element of your doc, instantiate
 the TagulaBasa-class upon an element of your choice, it will then be
 regarded as the root-element of your app:
 
-```javascript
-    var tag = document.body
-    tag = new TagulaBasa(tag)
-```
+
+    var tag = new TagulaBasa(document.body)
+
 
 Or, don't pass an element, then the body-element is the chosen one.
-
-Furtheron the new peoperties can be used of that element:
-
-```javascript
-    tag.add()       // Append a child-element with tag-name 'div'.
-    tag.add('h2')  //  Append a child-element with tag-name 'h2'.
-```
 
 The element itself now lives in the ele-property of the tag, of which
 you can get it anytime to modify its original props, as usual:
 
+    tag.ele.tabIndex = 0 // Get element and set tab-index with native-prop.
 
-```javascript
-    tag.ele.tabIndex = 0 // Get element and set tab-index with native prop.
-```
 
-Besides of seperation of concerns we can also comfortably walk the tree
-in our scripts:
+The tag-object provides properties containing functions, which are applied
+upon the element, when executed as shown below.
 
-```javascript
-    tag.up() // go to parent, tag is now parent
 
-    tag.down()          // go to first child
-    tag.down(0)        // go to first child
-    tag.down('first') // go to first child
+    // Append a child-element with tag-name 'div' and switch context to child:
+    tag.add()
 
-    tag.down(-1)      // go to last child
-    tag.down('last') // go to last child
-```
+    // Append a child-element with tag-name 'h2' and switch context to child:
+    tag.add('h2')
 
-Where on each step taken, the ele-property will change to the current
-context-ele and provide our extra-properties on the context.
+    // Set text in current context-ele:
+    tag.txt('Hello again!')
 
-Look into this script, to see all available functions.
+    // Get text of current context-ele:
+    var text = tag.txt()
+
+    // Apply an anonymous event-listener on ele:
+    tag.eve('onclick', function(eve) {console.log(`clicked ${eve.target}`)} )
+
+    // Apply a named event-listener on ele:
+    function doAfterClick(eve) { console.log(`${eve.target} got clicked`) }
+    tag.eve('onclick', doAfterClick)
+
+    // For some events there are short-forms, e.g. for click:
+    tag.click(doAfterClick)
+
+    // Switch context to parent:
+    tag.up()
+
+    // Switch context to first child:
+    tag.down('first')
+
+    // Same, same:
+    tag.down(0)
+
+    // Switch context to second child:
+    tag.down(1)
+
+    // Switch context to last child:
+    tag.down(-1)
+
+    // Same, same:
+    tag.down('last')
+
+    // Switch context to second-last child:
+    tag.down(-2)
+
+    // Switch context to app-ele:
+    tag.ele = tag.root
 
 
 Authors
@@ -79,6 +104,11 @@ License
 
 MIT, a copy is attached in this folder.
 
+
+Last review
+-----------
+
+This description was lastly reviewed by a human on May 17th, 2018.
 
 */
 
@@ -102,7 +132,7 @@ function TagulaBasa(ele=null) {
 TagulaBasa.prototype.down = function(pos=-1) {
   // Switch context to child at position.
   // Defauts to last child, assuming most common case
-  // is to walk down after appending an ele.
+  // after appending an ele with `TagulaBasa.add`.
   // If you want to grab the first child,
   // pass zero or 'first' as pos.
   if(pos == 'first') pos = 0
@@ -114,50 +144,17 @@ TagulaBasa.prototype.down = function(pos=-1) {
 }
 
 
-
-TagulaBasa.prototype.download = function(ele=null) {
-
-  // Download content of current tag as a file
-  // named after the ele's first found className,
-  // or its tagName.
-
-
-  if(ele === null) ele = this.ele
-
-
-  var a = document.createElement('a')
-  var fileContent = ele.outerHTML
-  var fileExtension = 'html'
-  var fileName = ele.className.split(' ')[0]
-
-
-  if(fileName == '') fileName = ele.tagName.toLowerCase()
-  if(ele.tagName.toLowerCase() == 'style') fileExtension = 'css'
-  else if(ele.tagName.toLowerCase() == 'script') fileExtension = 'js'
-
-
-  fileName += '.' + fileExtension
-  a.setAttribute('download', fileName)
-  a.textContent = 'Download'
-  a.href = 'data: application/text; charset=utf-8,'
-         + encodeURIComponent(fileContent)
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-
-
-}
-
-
-
 TagulaBasa.prototype.nxt = function() {
-  // Get next sibling-ele, if there is none, return null.
+  // Get next sibling-ele. If there is none, return null.
   this.ele = this.ele.nextElementSibling
 }
+
+
 TagulaBasa.prototype.prv = function() {
-  // Get previous sibling-ele, if there is none, return null.
+  // Get previous sibling-ele. If there is none, return null.
   this.ele = this.ele.previousElementSibling
 }
+
 
 TagulaBasa.prototype.up = function() {
   // Switch context to parent-ele.
@@ -176,7 +173,8 @@ TagulaBasa.prototype.uppest = function() {
  */ 
 
 TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
-  // Add ele in current ele at position and return ele-tag-obj.
+  // Add ele in current ele at position, switch tag-context
+  // to it, and return tag-object.
   var tag = this
   var ele = document.createElement(tagName)
   var nextSibling = null // if no sibling found, insert ele as last child
@@ -198,7 +196,7 @@ TagulaBasa.prototype.add = function(tagName='div', pos=-1) {
 
 TagulaBasa.prototype.adds = function(funcOrArrayName) {
   // Create list-element, fill it with passed items, return list-element.
-  // Passed items can be an array or a function which returns an array.
+  // Passed items can be an array, or a function which returns an array.
   var items = funcOrArrayName
   if(typeof(items) == 'function') {
     items = items()
@@ -281,4 +279,45 @@ TagulaBasa.prototype.script = function(script) {
   } else space = '\n'
   this.scriptEle.innerHTML += space + script
 }
+
+/*
+ *
+ *  Export
+ *
+ */
+ 
+TagulaBasa.prototype.download = function(ele=null) {
+
+  // Download content of current tag as a file
+  // named after the ele's first found className,
+  // or its tagName.
+
+
+  if(ele === null) ele = this.ele
+
+
+  var a = document.createElement('a')
+  var fileContent = ele.outerHTML
+  var fileExtension = 'html'
+  var fileName = ele.className.split(' ')[0]
+
+
+  if(fileName == '') fileName = ele.tagName.toLowerCase()
+  if(ele.tagName.toLowerCase() == 'style') fileExtension = 'css'
+  else if(ele.tagName.toLowerCase() == 'script') fileExtension = 'js'
+
+
+  fileName += '.' + fileExtension
+  a.setAttribute('download', fileName)
+  a.textContent = 'Download'
+  a.href = 'data: application/text; charset=utf-8,'
+         + encodeURIComponent(fileContent)
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+
+
+}
+
+
 
