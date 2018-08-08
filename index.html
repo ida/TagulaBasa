@@ -1,53 +1,21 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html>
-<head>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN"><html><head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<title>Tagula basa</title>
-<style>
-  * { margin-left: 1em }
-</style>
-<script type="text/javascript" src="TagulaBasa-0.1dev.js"></script>
+<title>Tagula basa</title><script src="TagulaBasa-0.1dev.js"></script>
 <script type="text/javascript">
 document.addEventListener("DOMContentLoaded", function(event) {
-
-
 var tag = new TagulaBasa()
-
-
-tag.add()
-tag.down(-1)
-  tag.txt('Container')
-  tag.add()
-  tag.down(-1)
-    tag.txt('First child')
-    tag.add()
-    tag.down(-1)
-      tag.txt('Grand child')
-    tag.up()
+tag.style('* { margin: 0; } body * * { margin-left: 1em; }')
+tag.script("console.debug('Example script-lines')")
+tag.add().txt('${Container}')
+tag.add().txt('${Container}')
+  tag.add().txt('${Container}')
   tag.up()
-
-  tag.add()
-  tag.down(-1)
-    tag.txt('A child')
+  tag.add().txt('${Container}')
+tag.style(`${tag.genCssSelector()} { background: lightgreen; }`)
   tag.up()
-
-  tag.add()
-  tag.down(-1)
-    tag.txt('Last child')
-  tag.up()
-
-  var pos = -
-7
-  tag.add('span', pos)
-
-
-tag.uppest()
-//tag.download()
-
-
-}); // DOM loaded
-</script>
-</head>
-<body lang="en" dir="ltr">
-</body>
-</html>
+  tag.add().txt('${Container}')
+tag.style(`${tag.genCssSelector()} { background: lightblue; }`)
+tag.downloads()
+/*
+*/
+}); /* DOM loaded */ </script></head><body lang="en" dir="ltr"></body></html>

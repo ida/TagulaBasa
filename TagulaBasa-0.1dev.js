@@ -276,6 +276,29 @@ TagulaBasa.prototype.click = function(functionName) {
 
 /*
  *
+ *  Style
+ *
+ */
+TagulaBasa.prototype.css = function(style) {
+  var space = ''
+  if(this.styleEle === undefined) {
+    var context = this.ele
+    this.ele = document.head
+    this.add('style')
+    this.ele.type = 'text/css'
+    this.styleEle = this.ele
+    this.ele = context
+  } else space = '\n'
+  this.styleEle.innerHTML += space + style
+}
+TagulaBasa.prototype.style = function(style) {
+  var selector = this.genCssSelector()
+  style = selector + ' {\n' + style + '\n}\n'
+  this.css(style)
+}
+
+/*
+ *
  *  Script
  *
  */
@@ -286,6 +309,7 @@ TagulaBasa.prototype.script = function(script) {
     var context = this.ele
     this.ele = document.head
     this.add('script')
+    this.ele.type = 'text/javascript'
     this.scriptEle = this.ele
     this.ele = context
   } else space = '\n'
@@ -298,34 +322,113 @@ TagulaBasa.prototype.script = function(script) {
  *
  */
  
-TagulaBasa.prototype.download = function(ele=null) {
-
+TagulaBasa.prototype.download = function(eleOrHtml=null) {
   // Download content of current tag as a file
   // named after the ele's first found className,
   // or its tagName.
-
-
-  if(ele === null) ele = this.ele
-
-
-  var a = document.createElement('a')
-  var fileContent = ele.outerHTML
+  var ele = null
+  var fileContent = null
   var fileExtension = 'html'
+  ele = this.ele
+  if(eleOrHtml instanceof Element) ele = eleOrHtml
+  fileContent = ele.innerHTML
+  if(ele.tagName.toLowerCase() == 'style') fileExtension = '.css'
+  else if(ele.tagName.toLowerCase() == 'script') fileExtension = '.js'
+  else fileContent = ele.outerHTML
+  var a = document.createElement('a')
   var fileName = ele.className.split(' ')[0]
-
-
   if(fileName == '') fileName = ele.tagName.toLowerCase()
-  if(ele.tagName.toLowerCase() == 'style') fileExtension = 'css'
-  else if(ele.tagName.toLowerCase() == 'script') fileExtension = 'js'
-
-
   fileName += '.' + fileExtension
   a.setAttribute('download', fileName)
   a.textContent = 'Download'
-  a.href = 'data: application/text; charset=utf-8,'
+  a.href = 'data: application/octet-stream; charset=utf-8,'
          + encodeURIComponent(fileContent)
   document.body.appendChild(a)
   a.click()
   a.remove()
+}
+TagulaBasa.prototype.export = function(fileContent, fileName='index.txt') {
+  var a = document.createElement('a')
+  a.setAttribute('download', fileName)
+  a.textContent = 'Download'
+  a.href = 'data: application/octet-stream; charset=utf-8,'
+         + encodeURIComponent(fileContent)
+  document.body.appendChild(a)
+  a.click()
+  a.remove()
+}
+TagulaBasa.prototype.downloads = function() {
+  var html = '<html>'
+  html += '\n'
+  html += '    <head>'
+  html += '    <meta charset="utf-8">'
+  html += '\n'
+  if(this.scriptEle !== undefined) {
+    html += '        <script>'
+    html += '\n'
+    html += this.scriptEle.innerHTML
+    html += '\n'
+    html += '        </script>'
+    html += '\n'
+  }
+  if(this.styleEle !== undefined) {
+    html += '<style>'
+      html += this.styleEle.innerHTML
+    html += '</style>'
+  }
+  html += '    </head>'
+  html += '\n'
+  html += '    <body>'
+  html += '\n'
+  this.uppest()
+  html += this.ele.innerHTML.trim()
+  html += '\n'
+  html += '    </body>'
+  html += '\n'
+  html += '</html>'
+  //this.expo(html)
+  this.download(html)
+}
+TagulaBasa.prototype.genCssSelector = function(includeSiblings=false) {
+  var i = 1
+  var ele = this.ele
+  var eleCurrent = null
+  var selector = ''
+  while(ele.tagName.toLowerCase() != 'body') {
+    eleCurrent = ele
+    while(ele.previousElementSibling !== null) {
+      i += 1
+      ele = ele.previousElementSibling
+    }
+    ele = eleCurrent
+    selector = ' > ' + ele.tagName.toLowerCase() + ':nth-child(' + i + ')' + selector
+    i = 1
+    ele = ele.parentNode
+  }
+
+  selector = 'body' + selector
+  if(includeSiblings === true) {
+    selector = selector.split(':').slice(0, -1).join(':')
+  }
+  return selector
+}
+TagulaBasa.prototype.genJsTreeSelector = function() {
+  var ele = this.ele
+  var eleCurrent = null
+  var i = 0
+  var selector = ''
+  while(ele.tagName.toLowerCase() != 'body') {
+    eleCurrent = ele
+    while(ele.previousElementSibling !== null) {
+      i += 1
+      ele = ele.previousElementSibling
+    }
+    ele = eleCurrent
+    selector = '.children[' + i + ']' + selector
+    i = 0
+    ele = ele.parentNode
+  }
+  selector = 'document.body' + selector
+  return selector
 }
 
